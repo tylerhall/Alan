@@ -19,4 +19,5 @@ struct Key {
     static let hideDock = "hideDock"
     static let lightMode = "lightMode"
     static let darkMode = "darkMode"
+    static let showFrameWhileDragging = "showFrameWhileDragging"
 }
