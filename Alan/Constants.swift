@@ -16,6 +16,7 @@ struct Defaults {
 struct Key {
     static let width = "width"
     static let inset = "inset"
+    static let cornerRadius = "cornerRadius"
     static let hideDock = "hideDock"
     static let lightMode = "lightMode"
     static let darkMode = "darkMode"

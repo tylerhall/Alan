@@ -17,10 +17,10 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window identifier="PrefsWindowController" title="Alan" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="PrefsWindowController" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="444" height="209"/>
+            <rect key="contentRect" x="196" y="240" width="444" height="236"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2880" height="1595"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="444" height="209"/>
+                <rect key="frame" x="0.0" y="0.0" width="444" height="236"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <gridView xPlacement="leading" yPlacement="bottom" rowAlignment="none" translatesAutoresizingMaskIntoConstraints="NO" id="fhS-ed-gPi">
@@ -28,6 +28,7 @@
                         <rows>
                             <gridRow rowAlignment="firstBaseline" id="7Vg-m1-wed"/>
                             <gridRow rowAlignment="firstBaseline" id="3Pg-Pm-pEX"/>
+                            <gridRow rowAlignment="firstBaseline" id="cr-row-001"/>
                             <gridRow rowAlignment="firstBaseline" id="4Oy-mE-p0P"/>
                             <gridRow rowAlignment="firstBaseline" id="1ea-ym-QQh"/>
                             <gridRow rowAlignment="firstBaseline" id="sfd-dr-agg"/>
@@ -105,6 +106,41 @@
                                     <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="lgm-qK-EyP"/>
                                     <connections>
                                         <binding destination="64K-Q4-8Mv" name="value" keyPath="values.inset" id="dxi-kW-tnx"/>
+                                    </connections>
+                                </stepper>
+                            </gridCell>
+                            <gridCell row="cr-row-001" column="SwQ-Kz-8BL" id="cr-cell-lbl">
+                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cr-lbl-001">
+                                    <rect key="frame" x="0" y="35" width="87" height="16"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Corner Radius" id="cr-lbl-cell">
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </gridCell>
+                            <gridCell row="cr-row-001" column="WUf-1y-4w5" id="cr-cell-txt">
+                                <textField key="contentView" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cr-txt-001">
+                                    <rect key="frame" x="87" y="33" width="100" height="21"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="cr-txt-cell">
+                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" usesGroupingSeparator="NO" formatWidth="-1" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="42" id="cr-num-fmt">
+                                            <integer key="roundingIncrement" value="1"/>
+                                        </numberFormatter>
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="64K-Q4-8Mv" name="value" keyPath="values.cornerRadius" id="cr-bind-txt"/>
+                                    </connections>
+                                </textField>
+                            </gridCell>
+                            <gridCell row="cr-row-001" column="L2g-Pd-kyh" id="cr-cell-stp">
+                                <stepper key="contentView" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cr-stp-001">
+                                    <rect key="frame" x="190" y="29" width="19" height="28"/>
+                                    <stepperCell key="cell" continuous="YES" alignment="left" maxValue="50" id="cr-stp-cell"/>
+                                    <connections>
+                                        <binding destination="64K-Q4-8Mv" name="value" keyPath="values.cornerRadius" id="cr-bind-stp"/>
                                     </connections>
                                 </stepper>
                             </gridCell>
