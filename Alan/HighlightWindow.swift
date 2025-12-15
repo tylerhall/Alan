@@ -21,7 +21,7 @@ class HighlightWindow: NSWindow {
         self.hasShadow = false
         self.backgroundColor = .clear
         self.ignoresMouseEvents = true
-        self.level = .popUpMenu
+        self.level = .statusBar
         self.collectionBehavior = [.canJoinAllSpaces, .ignoresCycle]
         self.isReleasedWhenClosed = false
         
