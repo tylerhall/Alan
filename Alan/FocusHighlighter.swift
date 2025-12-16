@@ -20,7 +20,7 @@ class FocusHighlighter {
     func start() {
         handleFocusChange()
 
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0 / 60.0, repeats: true) { [weak self] _ in
             self?.handleFocusChange()
         }
 
@@ -53,66 +53,50 @@ class FocusHighlighter {
 
     // Hello, darkness, my old friend. I'm still really bad at this API.
     private func currentFocusedWindowFrame() -> CGRect? {
-        var focusedElement: CFTypeRef?
-        let err = AXUIElementCopyAttributeValue(
-            systemWideElement,
-            kAXFocusedUIElementAttribute as CFString,
-            &focusedElement
-        )
-
-        guard err == .success, let element = focusedElement as! AXUIElement? else {
+        // Get the active application
+        guard let activeApp = NSWorkspace.shared.frontmostApplication,
+              let activeAppName = activeApp.localizedName else {
             return nil
         }
-
-        // If focus is a child, ask for its window
-        var windowElement: CFTypeRef?
-        let windowErr = AXUIElementCopyAttributeValue(
-            element,
-            kAXWindowAttribute as CFString,
-            &windowElement
-        )
-
-        let targetElement: AXUIElement
-        if windowErr == .success, let w = windowElement as! AXUIElement? {
-            targetElement = w
-        } else {
-            targetElement = element
-        }
-
-        var frameValue: CFTypeRef?
-        let frameErr = AXUIElementCopyAttributeValue(
-            targetElement,
-            "AXFrame" as CFString,
-            &frameValue
-        )
-
-        guard frameErr == .success,
-              let cfValue = frameValue,
-              CFGetTypeID(cfValue) == AXValueGetTypeID()
-        else {
+        
+        // Get list of all on-screen windows
+        guard let windowList = CGWindowListCopyWindowInfo(
+            [.optionOnScreenOnly],
+            kCGNullWindowID
+        ) as? [[String: Any]] else {
             return nil
         }
-
-        var rect = CGRect.zero
-        if AXValueGetType(cfValue as! AXValue) == .cgRect {
-            AXValueGetValue(cfValue as! AXValue, .cgRect, &rect)
-            return rect
+        
+        // Find the frontmost window of the active application
+        for window in windowList {
+            guard let ownerName = window[kCGWindowOwnerName as String] as? String,
+                  let layer = window[kCGWindowLayer as String] as? Int,
+                  ownerName == activeAppName,
+                  layer == 0 else { // Normal windows only
+                continue
+            }
+            
+            guard let boundsDict = window[kCGWindowBounds as String] as? [String: CGFloat] else {
+                continue
+            }
+            
+            let x = boundsDict["X"] ?? 0
+            let y = boundsDict["Y"] ?? 0
+            let width = boundsDict["Width"] ?? 0
+            let height = boundsDict["Height"] ?? 0
+            
+            return CGRect(x: x, y: y, width: width, height: height)
         }
-
+        
         return nil
     }
 }
 
 private func cocoaRect(fromAXRect axRect: CGRect) -> CGRect {
-    // Find the maximum Y coordinate across all screens in Cocoa space
-    // This represents the total height of the entire screen arrangement
-    // AX coordinates start from y=0 at the top of the topmost screen
-    // Cocoa coordinates start from y=0 at the bottom of the bottommost screen
-    // So we need the total height to properly flip the Y coordinate
-    let maxY = NSScreen.screens.map { $0.frame.maxY }.max() ?? 0
-
+    // The coordinate space starts at the primary display
+    // The primary display is at index zero of the NSScreen.screens array, this
+    // is not the same as NSScreen.main which is the window with the current focus
     var rect = axRect
-    rect.origin.y = maxY - (axRect.origin.y + axRect.height)
-
+    rect.origin.y = NSScreen.screens[0].frame.maxY - axRect.maxY
     return rect
 }

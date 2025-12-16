@@ -51,7 +51,14 @@ class HighlightView: NSView {
         var width = UserDefaults.standard.integer(forKey: Key.width)
         width = max(1, min(20, width))
 
-        let path = NSBezierPath(rect: bounds.insetBy(dx: CGFloat(inset), dy: CGFloat(inset)))
+        let cornerRadius = UserDefaults.standard.integer(forKey: Key.radius)
+        
+        let roundedRect = bounds.insetBy(dx: CGFloat(inset), dy: CGFloat(inset))
+        let path = NSBezierPath(
+            roundedRect: roundedRect,
+            xRadius: CGFloat(cornerRadius),
+            yRadius: CGFloat(cornerRadius)
+        )
         path.lineWidth = CGFloat(width)
 
         let color: NSColor
