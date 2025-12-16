@@ -22,7 +22,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             Key.inset: 4,
             Key.hideDock: false,
             Key.lightMode: Defaults.lightModeColor,
-            Key.darkMode: Defaults.darkModeColor
+            Key.darkMode: Defaults.darkModeColor,
+            Key.radius: 8
         ])
 
         if UserDefaults.standard.bool(forKey: Key.hideDock) == true {
