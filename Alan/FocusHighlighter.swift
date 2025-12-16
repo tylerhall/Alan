@@ -53,52 +53,41 @@ class FocusHighlighter {
 
     // Hello, darkness, my old friend. I'm still really bad at this API.
     private func currentFocusedWindowFrame() -> CGRect? {
-        var focusedElement: CFTypeRef?
-        let err = AXUIElementCopyAttributeValue(
-            systemWideElement,
-            kAXFocusedUIElementAttribute as CFString,
-            &focusedElement
-        )
-
-        guard err == .success, let element = focusedElement as! AXUIElement? else {
+        // Get the active application
+        guard let activeApp = NSWorkspace.shared.frontmostApplication,
+              let activeAppName = activeApp.localizedName else {
             return nil
         }
-
-        // If focus is a child, ask for its window
-        var windowElement: CFTypeRef?
-        let windowErr = AXUIElementCopyAttributeValue(
-            element,
-            kAXWindowAttribute as CFString,
-            &windowElement
-        )
-
-        let targetElement: AXUIElement
-        if windowErr == .success, let w = windowElement as! AXUIElement? {
-            targetElement = w
-        } else {
-            targetElement = element
-        }
-
-        var frameValue: CFTypeRef?
-        let frameErr = AXUIElementCopyAttributeValue(
-            targetElement,
-            "AXFrame" as CFString,
-            &frameValue
-        )
-
-        guard frameErr == .success,
-              let cfValue = frameValue,
-              CFGetTypeID(cfValue) == AXValueGetTypeID()
-        else {
+        
+        // Get list of all on-screen windows
+        guard let windowList = CGWindowListCopyWindowInfo(
+            [.optionOnScreenOnly],
+            kCGNullWindowID
+        ) as? [[String: Any]] else {
             return nil
         }
-
-        var rect = CGRect.zero
-        if AXValueGetType(cfValue as! AXValue) == .cgRect {
-            AXValueGetValue(cfValue as! AXValue, .cgRect, &rect)
-            return rect
+        
+        // Find the frontmost window of the active application
+        for window in windowList {
+            guard let ownerName = window[kCGWindowOwnerName as String] as? String,
+                  let layer = window[kCGWindowLayer as String] as? Int,
+                  ownerName == activeAppName,
+                  layer == 0 else { // Normal windows only
+                continue
+            }
+            
+            guard let boundsDict = window[kCGWindowBounds as String] as? [String: CGFloat] else {
+                continue
+            }
+            
+            let x = boundsDict["X"] ?? 0
+            let y = boundsDict["Y"] ?? 0
+            let width = boundsDict["Width"] ?? 0
+            let height = boundsDict["Height"] ?? 0
+            
+            return CGRect(x: x, y: y, width: width, height: height)
         }
-
+        
         return nil
     }
 }
