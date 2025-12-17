@@ -16,6 +16,9 @@ class FocusHighlighter {
     private let highlightWindow = HighlightWindow()
     private var timer: Timer?
     private var lastFrame: CGRect?
+    private var frameIsDrawn = false;
+    private var drawFrame = true
+    private var disableFrameTimer: Timer?
 
     func start() {
         handleFocusChange()
@@ -35,6 +38,20 @@ class FocusHighlighter {
     }
     
     private func handleFocusChange() {
+        // Check if the frontmost app is excluded
+        if let frontmostApp = NSWorkspace.shared.frontmostApplication,
+           let bundleIdentifier = frontmostApp.bundleIdentifier {
+
+            let excludedApps = UserDefaults.standard.stringArray(forKey: Key.excludedApps) ?? []
+            if excludedApps.contains(bundleIdentifier) {
+                if highlightWindow.isVisible {
+                    highlightWindow.orderOut(nil)
+                    lastFrame = nil
+                }
+                return
+            }
+        }
+
         guard let axFrame = currentFocusedWindowFrame() else {
             if highlightWindow.isVisible {
                 highlightWindow.orderOut(nil)
@@ -47,7 +64,26 @@ class FocusHighlighter {
 
         if lastFrame != cocoaFrame {
             lastFrame = cocoaFrame
+            frameIsDrawn = false;
+
+            let showFrameWhileDragging = UserDefaults.standard.object(forKey: Key.showFrameWhileDragging) as? Bool ?? true
+            if !showFrameWhileDragging {
+                temporarilyDisableFrameDrawing()
+                return;
+            }
+        }
+        if !frameIsDrawn && drawFrame {
+            frameIsDrawn = true;
             highlightWindow.updateFrame(to: cocoaFrame)
+        }
+    }
+
+    private func temporarilyDisableFrameDrawing() {
+        drawFrame = false
+        highlightWindow.orderOut(nil)
+        disableFrameTimer?.invalidate()
+        disableFrameTimer = Timer.scheduledTimer(withTimeInterval: Defaults.frameDrawingDisableTimeout, repeats: false) { [weak self] _ in
+            self?.drawFrame = true
         }
     }
 

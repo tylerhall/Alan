@@ -8,7 +8,11 @@
         <customObject id="-2" userLabel="File's Owner" customClass="PrefsWindowController" customModule="Alan" customModuleProvider="target">
             <connections>
                 <outlet property="darkModeColorWell" destination="Jxj-8q-f3z" id="rlQ-f2-vdS"/>
+                <outlet property="excludedAppsTableView" destination="ea-tbl-001" id="ea-out-001"/>
+                <outlet property="glowingBorderCheckbox" destination="ig-btn-001" id="ig-out-001"/>
                 <outlet property="lightModeColorWell" destination="a3u-bc-pli" id="gs0-l4-XRK"/>
+                <outlet property="showFrameWhileDraggingCheckbox" destination="sfd-btn-ccc" id="sfd-out-ggg"/>
+                <outlet property="strongerShadowCheckbox" destination="sr-btn-001" id="sr-out-001"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="tgm-uC-mjt"/>
             </connections>
         </customObject>
@@ -16,10 +20,10 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window identifier="PrefsWindowController" title="Alan" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="PrefsWindowController" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="444" height="209"/>
+            <rect key="contentRect" x="196" y="240" width="444" height="480"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2880" height="1595"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="444" height="209"/>
+                <rect key="frame" x="0.0" y="0.0" width="444" height="480"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <gridView xPlacement="leading" yPlacement="bottom" rowAlignment="none" translatesAutoresizingMaskIntoConstraints="NO" id="fhS-ed-gPi">
@@ -27,8 +31,12 @@
                         <rows>
                             <gridRow rowAlignment="firstBaseline" id="7Vg-m1-wed"/>
                             <gridRow rowAlignment="firstBaseline" id="3Pg-Pm-pEX"/>
+                            <gridRow rowAlignment="firstBaseline" id="cr-row-001"/>
+                            <gridRow rowAlignment="firstBaseline" id="sr-row-001"/>
+                            <gridRow rowAlignment="firstBaseline" id="ig-row-001"/>
                             <gridRow rowAlignment="firstBaseline" id="4Oy-mE-p0P"/>
                             <gridRow rowAlignment="firstBaseline" id="1ea-ym-QQh"/>
+                            <gridRow rowAlignment="firstBaseline" id="sfd-dr-agg"/>
                         </rows>
                         <columns>
                             <gridColumn xPlacement="trailing" id="SwQ-Kz-8BL"/>
@@ -106,6 +114,63 @@
                                     </connections>
                                 </stepper>
                             </gridCell>
+                            <gridCell row="cr-row-001" column="SwQ-Kz-8BL" id="cr-cell-lbl">
+                                <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cr-lbl-001">
+                                    <rect key="frame" x="0" y="35" width="87" height="16"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Corner Radius" id="cr-lbl-cell">
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </gridCell>
+                            <gridCell row="cr-row-001" column="WUf-1y-4w5" id="cr-cell-txt">
+                                <textField key="contentView" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cr-txt-001">
+                                    <rect key="frame" x="87" y="33" width="100" height="21"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="cr-txt-cell">
+                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" usesGroupingSeparator="NO" formatWidth="-1" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="42" id="cr-num-fmt">
+                                            <integer key="roundingIncrement" value="1"/>
+                                        </numberFormatter>
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="64K-Q4-8Mv" name="value" keyPath="values.cornerRadius" id="cr-bind-txt"/>
+                                    </connections>
+                                </textField>
+                            </gridCell>
+                            <gridCell row="cr-row-001" column="L2g-Pd-kyh" id="cr-cell-stp">
+                                <stepper key="contentView" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cr-stp-001">
+                                    <rect key="frame" x="190" y="29" width="19" height="28"/>
+                                    <stepperCell key="cell" continuous="YES" alignment="left" maxValue="50" id="cr-stp-cell"/>
+                                    <connections>
+                                        <binding destination="64K-Q4-8Mv" name="value" keyPath="values.cornerRadius" id="cr-bind-stp"/>
+                                    </connections>
+                                </stepper>
+                            </gridCell>
+                            <gridCell row="sr-row-001" column="SwQ-Kz-8BL" id="sr-cell-lbl"/>
+                            <gridCell row="sr-row-001" column="WUf-1y-4w5" id="sr-cell-chk">
+                                <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="sr-btn-001">
+                                    <rect key="frame" x="84" y="0" width="120" height="18"/>
+                                    <buttonCell key="cell" type="check" title="Stronger Shadow" bezelStyle="regularSquare" imagePosition="left" id="sr-cell-001"/>
+                                    <connections>
+                                        <action selector="strongerShadowChanged:" target="-2" id="sr-act-001"/>
+                                    </connections>
+                                </button>
+                            </gridCell>
+                            <gridCell row="sr-row-001" column="L2g-Pd-kyh" id="sr-cell-empty"/>
+                            <gridCell row="ig-row-001" column="SwQ-Kz-8BL" id="ig-cell-lbl"/>
+                            <gridCell row="ig-row-001" column="WUf-1y-4w5" id="ig-cell-chk">
+                                <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="ig-btn-001">
+                                    <rect key="frame" x="84" y="0" width="100" height="18"/>
+                                    <buttonCell key="cell" type="check" title="Glowing Border" bezelStyle="regularSquare" imagePosition="left" id="ig-cell-001"/>
+                                    <connections>
+                                        <action selector="glowingBorderChanged:" target="-2" id="ig-act-001"/>
+                                    </connections>
+                                </button>
+                            </gridCell>
+                            <gridCell row="ig-row-001" column="L2g-Pd-kyh" id="ig-cell-empty"/>
                             <gridCell row="4Oy-mE-p0P" column="SwQ-Kz-8BL" id="BvX-UM-bMA">
                                 <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Nm-tu-edR">
                                     <rect key="frame" x="10" y="35" width="73" height="16"/>
@@ -146,12 +211,97 @@
                                 </colorWell>
                             </gridCell>
                             <gridCell row="1ea-ym-QQh" column="L2g-Pd-kyh" id="yqa-5A-7mf"/>
+                            <gridCell row="sfd-dr-agg" column="SwQ-Kz-8BL" id="sfd-c1-aaa"/>
+                            <gridCell row="sfd-dr-agg" column="WUf-1y-4w5" id="sfd-c2-bbb">
+                                <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="sfd-btn-ccc">
+                                    <rect key="frame" x="84" y="-32" width="190" height="18"/>
+                                    <buttonCell key="cell" type="check" title="Show border while dragging" bezelStyle="regularSquare" imagePosition="left" state="on" id="sfd-cell-ddd"/>
+                                    <connections>
+                                        <action selector="showFrameWhileDraggingChanged:" target="-2" id="sfd-act-hhh"/>
+                                    </connections>
+                                </button>
+                            </gridCell>
+                            <gridCell row="sfd-dr-agg" column="L2g-Pd-kyh" id="sfd-c3-fff"/>
                         </gridCells>
                     </gridView>
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ea-lbl-001">
+                        <rect key="frame" x="20" y="175" width="120" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Excluded Apps:" id="ea-lbl-cell">
+                            <font key="font" metaFont="systemBold"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <scrollView borderType="bezel" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ea-scr-001">
+                        <rect key="frame" x="20" y="50" width="404" height="120"/>
+                        <clipView key="contentView" drawsBackground="YES" id="ea-clp-001">
+                            <rect key="frame" x="1" y="1" width="402" height="118"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="17" rowSizeStyle="automatic" viewBased="YES" id="ea-tbl-001">
+                                    <rect key="frame" x="0.0" y="0.0" width="402" height="118"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <tableColumns>
+                                        <tableColumn identifier="AppColumn" width="399" minWidth="40" maxWidth="1000" id="ea-col-001">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Application">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="ea-txt-cell">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </tableColumn>
+                                    </tableColumns>
+                                </tableView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="ea-hscr-001">
+                            <rect key="frame" x="-100" y="-100" width="223" height="15"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="ea-vscr-001">
+                            <rect key="frame" x="385" y="1" width="16" height="118"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                    </scrollView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ea-add-btn">
+                        <rect key="frame" x="20" y="15" width="100" height="32"/>
+                        <buttonCell key="cell" type="push" title="Add App..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ea-add-cell">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="addExcludedApp:" target="-2" id="ea-add-act"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ea-rem-btn">
+                        <rect key="frame" x="324" y="15" width="100" height="32"/>
+                        <buttonCell key="cell" type="push" title="Remove" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ea-rem-cell">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="removeExcludedApp:" target="-2" id="ea-rem-act"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="fhS-ed-gPi" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="Tsx-BW-ocS"/>
-                    <constraint firstItem="fhS-ed-gPi" firstAttribute="centerY" secondItem="EiT-Mj-1SZ" secondAttribute="centerY" id="abO-pX-eL4"/>
+                    <constraint firstItem="fhS-ed-gPi" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="grid-top"/>
+                    <constraint firstItem="ea-lbl-001" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="ea-lbl-lead"/>
+                    <constraint firstItem="ea-lbl-001" firstAttribute="top" secondItem="fhS-ed-gPi" secondAttribute="bottom" constant="20" id="ea-lbl-top"/>
+                    <constraint firstItem="ea-scr-001" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="ea-scr-lead"/>
+                    <constraint firstAttribute="trailing" secondItem="ea-scr-001" secondAttribute="trailing" constant="20" id="ea-scr-trail"/>
+                    <constraint firstItem="ea-scr-001" firstAttribute="top" secondItem="ea-lbl-001" secondAttribute="bottom" constant="8" id="ea-scr-top"/>
+                    <constraint firstItem="ea-scr-001" firstAttribute="height" constant="120" id="ea-scr-height"/>
+                    <constraint firstItem="ea-add-btn" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="ea-add-lead"/>
+                    <constraint firstItem="ea-add-btn" firstAttribute="top" secondItem="ea-scr-001" secondAttribute="bottom" constant="8" id="ea-add-top"/>
+                    <constraint firstAttribute="trailing" secondItem="ea-rem-btn" secondAttribute="trailing" constant="20" id="ea-rem-trail"/>
+                    <constraint firstItem="ea-rem-btn" firstAttribute="top" secondItem="ea-scr-001" secondAttribute="bottom" constant="8" id="ea-rem-top"/>
+                    <constraint firstAttribute="bottom" secondItem="ea-add-btn" secondAttribute="bottom" constant="15" id="ea-bottom"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="121" y="113.5"/>
